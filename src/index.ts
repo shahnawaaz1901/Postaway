@@ -1,6 +1,7 @@
 //* Import Packages and Types
 import express, { Express, Response, Request, NextFunction } from "express";
 import cors from "cors";
+import indexRouter from "./features/index.route";
 
 //* Initialize Server
 const app: Express = express();
@@ -11,32 +12,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //* Define Routes
-app.use(
-  "/users",
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {}
-);
-app.use(
-  "/posts",
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {}
-);
-app.use(
-  "/likes",
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {}
-);
-app.use(
-  "/comments",
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {}
-);
-app.use(
-  "/friends",
-  async (req: Request, res: Response, next: NextFunction): Promise<any> => {}
-);
+app.use(indexRouter);
 
 //* Home Page
 app.get("/", (req: Request, res: Response): any => {
   return res
     .status(200)
-    .json({ success: true, message: "Welcome to Postaway" });
+    .json({
+      success: true,
+      message: "Welcome to Postaway with TypeScript !!!",
+    });
 });
 
 //* Default Error Middleware

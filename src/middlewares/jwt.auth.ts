@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import ApplicationError from "../errors/ApplicationError";
+import Token from "../utils/token";
 
 const jwtAuth = (req: Request, res: Response, next: NextFunction): void => {
   try {
@@ -9,12 +9,11 @@ const jwtAuth = (req: Request, res: Response, next: NextFunction): void => {
       throw new ApplicationError(401, "UnAuthorized Access");
     }
 
-    const authToken = authHeader.split(" ")[1];
-    const { ACCESS_TOKEN_SECRET_KEY } = process.env;
-    const payload: any = jwt.verify(
-      authToken,
-      ACCESS_TOKEN_SECRET_KEY as string
-    );
+    const [bearer, authToken] = authHeader.split(" ");
+    if (bearer != "Bearer" || !authToken) {
+      throw new ApplicationError(400, "Invalid Token ");
+    }
+    const payload: any = Token.validateToken(authToken, "Access");
     req.body.id = payload.id;
   } catch (error: any) {
     next(error);

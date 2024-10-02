@@ -4,12 +4,14 @@ import postRouter from "./posts/post.route";
 import likeRouter from "./likes/like.router";
 import commentRouter from "./comments/comment.router";
 import friendRouter from "./friends/friend.router";
+import jwtAuth from "../middlewares/jwt.auth";
 
 const indexRouter = Router();
-indexRouter.use("/users", userRouter);
-indexRouter.use("/posts", postRouter);
-indexRouter.use("/likes", likeRouter);
-indexRouter.use("/comments", commentRouter);
-indexRouter.use("/friends", friendRouter);
+
+indexRouter.use("/api/users", userRouter);
+indexRouter.use("/api/posts", jwtAuth, postRouter);
+indexRouter.use("/api/likes", jwtAuth, likeRouter);
+indexRouter.use("/api/comments", jwtAuth, commentRouter);
+indexRouter.use("/api/friends", jwtAuth, friendRouter);
 
 export default indexRouter;
